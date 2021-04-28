@@ -1,0 +1,14 @@
+﻿@model IEnumerable<IdsProjectManagementSystem.Models.Project>
+
+
+<a asp-controller="Project" asp-action="Create" class="btn btn-outline-primary">Create Project</a>
+ 
+@foreach (var project in Model)
+{
+	<h1>@project.ProjectName</h1>
+	<a asp-controller="Project" asp-action="Details" asp-route-id="@project.ProjectId" class="btn btn-warning">View Details</a>
+	<a asp-controller="Project" asp-action="Edit" asp-route-id="@project.ProjectId" class="btn btn-info">Edit</a>
+	<a asp-controller="Project" asp-action="Delete" asp-route-id="@project.ProjectId" class="btn btn-danger">Delete</a>
+}
+
+

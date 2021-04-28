@@ -1,0 +1,98 @@
+﻿@model IdsProjectManagementSystem.Models.Project
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<div>
+	<h4>Project</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ProjectName)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ProjectName)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Description)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Description)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Profit)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Profit) $
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Rate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Rate) %
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.PaymentDate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.PaymentDate)
+		</dd>
+	</dl>
+</div>
+
+<hr />
+
+<div>
+	<h4>Team Members</h4>
+	<a class="btn btn-primary text-white" href="javascript:void(0)" id="add-member-btn">Add team member</a>
+	<table class="table table">
+		<tr>
+			<th>Name</th>
+			<th>Role</th>
+			<th>Work Hours</th>
+			<th>Performance</th>
+			<th>Profit</th>
+		</tr>
+		@foreach (var member in Model.Members)
+		{
+	<tr>
+		<td>@(member.FirstName + " " + member.LastName)</td>
+		<td>@member.Role</td>
+		<td>@member.WorkingHours</td>
+		<td>@member.Performance %</td>
+		<td>@(member.Profit + "$")</td>
+		<td> <a asp-controller="Member" asp-action="Edit" asp-route-id="@member.MemberId" class="btn btn-info">Edit</a></td>
+		<td> <a asp-controller="Member" asp-action="Delete" asp-route-id="@member.MemberId" asp-route-projectId="@Model.ProjectId" class="btn btn-danger">Delete</a></td>
+
+	</tr>
+		}
+	</table>
+</div>
+
+<div class="container" id="list-member-container">
+
+</div>
+<div>
+	@Html.ActionLink("Edit", "Edit", new { id = Model.ProjectId }) |
+	<a asp-action="Index">Back to List</a>
+
+</div>
+
+@section Scripts{
+	<script>
+
+		$('#add-member-btn').click(function () {
+			$.ajax({
+				async: true,
+				url: "/Member/Index?projectId="+@Model.ProjectId,
+				type: "GET",
+				contentType: "html",
+				success: function (res) {
+					$("#list-member-container").html(res);
+				}
+			})
+		});
+
+	</script>
+}
